@@ -33,7 +33,7 @@ This app makes that grid interactive. Click any square on the map to see which s
 
 ### Backend
 - Node.js with Express
-- MySQL 8.0
+- MySQL 8.4
 - Knex.js for migrations, seeding, and query building
 
 ---
@@ -55,11 +55,15 @@ star-wars-galaxy-map/
     ├── src/
     │   ├── routes/
     │   ├── controllers/
+    │   ├── utils/          # Input validation helpers
     │   └── db/
+    │       ├── knexfile.js
     │       ├── migrations/
     │       └── seeds/
+    ├── data/               # Parsed system data (used for seeding)
     ├── scripts/
     │   └── parsePdf.js     # One-time PDF-to-JSON extraction script
+    ├── README.md           # Full API reference
     └── package.json
 ```
 
@@ -119,6 +123,8 @@ npm run dev
 
 The API will be running at `http://localhost:3001`.
 
+See `backend/README.md` for the full API reference, including all endpoints, request/response formats, and validation rules.
+
 ### 3. Set up the frontend
 
 ```bash
@@ -133,7 +139,7 @@ The app will be running at `http://localhost:5173`.
 
 ## API Reference
 
-All endpoints are prefixed with `/api`.
+All endpoints are prefixed with `/api`. The backend serves 6,757 canon systems seeded from the source PDF.
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -145,27 +151,19 @@ All endpoints are prefixed with `/api`.
 | `PUT` | `/systems/:id` | Update an existing user-defined system. |
 | `DELETE` | `/systems/:id` | Delete a user-defined system. |
 
-Canon systems (seeded from the official index) cannot be edited or deleted.
+Canon systems (seeded from the official index) cannot be edited or deleted. See `backend/README.md` for full request/response documentation and validation rules.
 
-### Example: Systems in grid square J-8
+---
 
-```
-GET /api/systems/grid/J/8
-```
+## Deployment
 
-```json
-[
-  { "id": 412, "name": "Bilbringi", "sector": null, "region": "Inner Rim", "grid_col": "J", "grid_row": 8, "description": null, "is_user_added": false },
-  { "id": 598, "name": "Devshi",    "sector": null, "region": "Inner Rim", "grid_col": "J", "grid_row": 8, "description": null, "is_user_added": false },
-  { "id": 827, "name": "Dorin",     "sector": "Deadalis", "region": "Expansion Region", "grid_col": "J", "grid_row": 8, "description": null, "is_user_added": false }
-]
-```
+The backend API is deployed on a single AWS EC2 t2.micro instance (Amazon Linux 2023) with MySQL running on the same server. See `backend/TEST-DEPLOYMENT.md` for infrastructure details, credentials, and redeployment instructions.
 
 ---
 
 ## Data Source
 
-Canon star system data is sourced from the official star systems index published in the *Star Wars* reference materials. The dataset includes each system's name, sector (where listed), galactic region, and grid coordinate. Approximately 5,900 systems are included in the seed data.
+Canon star system data is sourced from the official star systems index published in the *Star Wars* reference materials. The dataset includes each system's name, sector (where listed), galactic region, and grid coordinate. 6,757 systems are included in the seed data.
 
 The raw data was extracted from a PDF reference document using `pdftotext` and a custom Node.js parsing script (`backend/scripts/parsePdf.js`). The parser handles the PDF's two-column page layout, blank sector fields, and header/footer rows, producing a clean JSON array that is inserted into the database via Knex's seed mechanism.
 
