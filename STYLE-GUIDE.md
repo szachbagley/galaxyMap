@@ -30,7 +30,7 @@ All colors are applied with semantic intent. Never use a color purely for aesthe
 | Surface | `#0E0E0E` | Panel backgrounds. Inactive cells. |
 | Surface Raised | `#141414` | Hover backgrounds on list rows. |
 | Rebel Yellow | `#FFE81A` | Selected state. Active frame. User-added system marker. Primary CTA. Form focus ring. |
-| Hologram Cyan | `#00C8C8` | Data values. Canon system badge. Populated grid cells. Coordinate readouts. |
+| Hologram Cyan | `#00C8C8` | Data values. Canon system badge. Grid cell dots and borders (revealed on hover). Coordinate readouts. |
 | Scanner Green | `#00CC44` | Grid hover crosshair. Cursor sweep. Loading scan animation. Nothing else. |
 | Alert Red | `#CC2200` | Form validation errors. Delete actions. Required field markers. API error states. |
 | Readout White | `#DDD8C4` | Primary body text. System names. |
@@ -38,9 +38,9 @@ All colors are applied with semantic intent. Never use a color purely for aesthe
 
 ### Color Semantics
 
-**Yellow — Interaction.** Selected grid square · Active panel border · User-added system marker · Submit / primary CTA · Form focus ring.
+**Yellow — Interaction.** Selected grid square · Active panel border · Submit / primary CTA · Form focus ring.
 
-**Cyan — Data.** Coordinate values · Canon system badge · Grid cell density fill · Detail field values · Nearby system counts.
+**Cyan — Data.** Coordinate values · Canon system badge · Grid cell dots and borders · Detail field values · Nearby system counts.
 
 **Green — Scan / Cursor only.** Grid row/column hover crosshair · "Scanning…" loading state · Sweep animation. This color appears in exactly two contexts and nowhere else.
 
@@ -81,21 +81,30 @@ Numbers always display with consistent digit counts: `04:22:09` not `4:22:9`, `0
 
 The 20×21 grid (columns C–V, rows 1–21) is the primary object of the application. All other panels serve it.
 
+### Background Image
+
+The grid renders over a drawing of the Star Wars galaxy map. The image covers the entire grid area (`background-size: cover`, `background-position: center`). A CSS gridline overlay sits on top of the image — 1px lines at `rgba(255,255,255,0.07)`, dim enough not to obscure the image but sufficient to show the grid structure. Individual cell borders and content are invisible until interaction.
+
 ### Cell States
 
-| State | Border | Background | Dot |
+| State | Border | Background | Dots |
 |---|---|---|---|
-| Empty | `#222220` 1px | `#090909` | None |
-| Sparse (1–3 systems) | Cyan-dim 1px | Cyan 6% opacity | Cyan dot |
-| Dense (4–12 systems) | Cyan 1px | Cyan 16% opacity | Cyan dots |
-| Core (13+ systems) | Cyan 1px | Cyan 28% opacity | Cyan dots |
-| Selected | Yellow 2px + corner tick marks | Yellow 12% opacity | Yellow dot |
-| User-added present | Yellow dashed 1px | Yellow 4% opacity | — |
-| Hover | Green 1px flash (100ms) | — | — |
+| Default | None | Transparent | None |
+| Hover | Cyan 1px | Transparent | Cyan dots (by density tier) |
+| Selected | Yellow 2px + corner tick marks | Yellow 12% opacity | Yellow dots (by density tier) |
 
 ### Density Encoding
 
-Cell fill uses a 4-stop opacity ramp on Hologram Cyan — the only place in the UI where a continuous value is expressed through color intensity. This is intentional: the galaxy map is a density heatmap. The ramp stops are empty → sparse (6%) → dense (16%) → core (28%). No additional stops; keep it legible at full 20×21 scale.
+Density is encoded through dot count, not color. Four tiers:
+
+| Systems in cell | Dots | Arrangement |
+|---|---|---|
+| 0 | 0 | — |
+| 1–3 | 1 | Centered |
+| 4–10 | 3 | Horizontal row |
+| 11+ | 4 | 2×2 grid |
+
+Dots are Hologram Cyan when the cell is hovered; Rebel Yellow when selected. No dot is visible in the default (unhovered) state — cells are fully transparent until interaction.
 
 ### Corner Tick Marks (Selected State)
 
@@ -106,10 +115,6 @@ The selected cell uses detached corner tick marks rather than a full border over
 Column letters (C–V) and row numbers (1–21) sit outside the grid in a fixed header row and left column. They use 8px uppercase Console Gray text.
 
 On hover of any cell, the corresponding column letter and row number highlight in Scanner Green — a crosshair effect that helps the user locate themselves on the map. Selected coordinate axis labels turn Yellow.
-
-### User-Added System Cells
-
-Cells containing at least one user-added system use a dashed Yellow border instead of the solid Cyan border. If the cell also contains canon systems, the dashed Yellow border takes precedence. This makes user-added entries spatially visible on the map without requiring any additional UI.
 
 ---
 
@@ -265,10 +270,10 @@ Panel internal dividers use 1px `#222220`. Never use heavier borders, double rul
 ## 09 — Motion & Interaction Behavior
 
 ### Grid Cell Click
-Panel opens instantly (0ms delay). The selected cell's border transitions gray → Yellow in 80ms. The panel itself appears without animation — no slide, no fade, no expand. Data is received, not revealed.
+Panel opens instantly (0ms delay). The selected cell's border transitions transparent → Yellow in 80ms. The panel itself appears without animation — no slide, no fade, no expand. Data is received, not revealed.
 
 ### Grid Cell Hover
-Column letter and row number in axis labels turn Scanner Green. The hovered cell gets a 1px green border flash (100ms). This is the only use of Scanner Green on the interactive grid.
+The hovered cell's border and dots appear in Hologram Cyan. Column letter and row number in axis labels turn Scanner Green. This is the only use of Scanner Green on the interactive grid.
 
 ### Data Loading
 Loading state: a slow horizontal scan line sweeps across the panel in Scanner Green (3s linear, repeating). Never a spinner, never a skeleton screen. Text reads `SCANNING…` in 8px Console Gray uppercase alongside the sweep. The sweep communicates signal acquisition — data is being received from a remote source.
@@ -296,8 +301,8 @@ If an alert state requires animation: pulse opacity between 60%–100% at ~1Hz. 
 - Uppercase text everywhere in UI labels
 - Sharp 90° corners — no `border-radius`
 - 1px or sub-pixel borders
-- Cyan opacity ramp for grid density encoding
-- Dashed Yellow border for user-added system cells
+- Dot count pattern (0 / 1 / 3 / 4) for grid density encoding
+- Galaxy map background image behind transparent grid cells
 - Italic Console Gray for null field values
 - Aurebesh script as static decorative labels (system identifiers, non-interactive)
 - Asymmetric panel layouts
@@ -318,6 +323,7 @@ If an alert state requires animation: pulse opacity between 60%–100% at ~1Hz. 
 - Icons from general icon libraries (e.g. Font Awesome, Heroicons) — use geometric SVG only
 - Bright fills on panel backgrounds
 - Edit or Delete controls on canon system records
+- Colored or opaque cell backgrounds on the galaxy grid (cells must remain transparent)
 
 ---
 
@@ -330,9 +336,10 @@ If an alert state requires animation: pulse opacity between 60%–100% at ~1Hz. 
 --yellow:      #FFE81A   /* Rebel Yellow — interaction */
 --yellow-dim:  #7A6F00   /* Yellow border on inactive states */
 --yellow-bg:   rgba(255,232,26,0.06)
---cyan:        #00C8C8   /* Hologram Cyan — data */
+--cyan:        #00C8C8   /* Hologram Cyan — data, grid dots/borders */
 --cyan-dim:    #005F5F   /* Cyan border on data panels */
 --cyan-bg:     rgba(0,200,200,0.06)
+--grid-line:   rgba(255,255,255,0.07) /* gridline overlay on galaxy image */
 --green:       #00CC44   /* Scanner Green — cursor/scan only */
 --red:         #CC2200   /* Alert Red — errors/delete */
 --red-dim:     #5C0F00
