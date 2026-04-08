@@ -2,6 +2,15 @@ import type { GridColumn, GridRow, System } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
+export async function getAllSystems(): Promise<System[]> {
+  const response = await fetch(`${API_BASE}/systems`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch systems: ${response.status}`);
+  }
+  return response.json();
+}
+
+
 export async function getSystemsByCoordinate(
   col: GridColumn,
   row: GridRow,
