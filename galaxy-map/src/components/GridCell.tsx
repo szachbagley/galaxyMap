@@ -1,5 +1,4 @@
 import type { GridColumn, GridRow } from '../types';
-import { useAppContext } from '../context/AppContext';
 
 interface GridCellProps {
     col: GridColumn;

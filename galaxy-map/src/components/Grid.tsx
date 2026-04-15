@@ -1,4 +1,4 @@
-  import { useState } from 'react';
+  import { useState, Fragment } from 'react';
   import { useAppContext } from '../context/AppContext';
   import { GridCell } from './GridCell.tsx';
   import type { System, GridColumn, GridRow } from '../types';
@@ -24,6 +24,8 @@
     }
 
     return (
+      <div className="grid-wrapper">
+      <div className="grid-bg" />
       <div className="grid-container">
         {/* Empty corner cell */}
         <div className="axis-corner" />
@@ -42,10 +44,9 @@
 
         {/* Rows */}
         {ROWS.map((row) => (
-          <>
+          <Fragment key={row}>
             {/* Row header */}
             <div
-              key={`row-${row}`}
               className={`axis-label row-label${
                 row === state.selectedCoordinate?.row ? ' axis-selected' : ''
               }${row === hoveredRow ? ' axis-hovered' : ''}`}
@@ -82,8 +83,9 @@
                 />
               );
             })}
-          </>
+          </Fragment>
         ))}
+      </div>
       </div>
     );
   }

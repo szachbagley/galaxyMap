@@ -1,11 +1,42 @@
+/* ── Grid wrapper (background image + gridlines) ── */
+.grid-wrapper {
+  position: relative;
+  width: fit-content;
+  margin: 32px auto;
+}
+
 /* ── Grid container ── */
 .grid-container {
   display: grid;
   grid-template-columns: 28px repeat(20, 28px);
   grid-template-rows: 28px repeat(21, 28px);
   gap: 0;
-  width: fit-content;
-  margin: 32px auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Background image — covers only the cell area, offset past axis labels */
+.grid-bg {
+  position: absolute;
+  top: 28px;   /* skip column header row */
+  left: 28px;  /* skip row label column */
+  width: calc(20 * 28px);
+  height: calc(21 * 28px);
+  background-image: url('../assets/galaxy-map-background.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Gridline overlay on top of the background image */
+.grid-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 /* ── Axis labels ── */
