@@ -1,7 +1,7 @@
   import { useState } from 'react';
-  import { useAppContext } from '../context/AppContext.tsx';
+  import { useAppContext } from '../context/AppContext';
   import { GridCell } from './GridCell.tsx';
-  import type { System, GridColumn, GridRow } from '../types.tsx';
+  import type { System, GridColumn, GridRow } from '../types';
 
   const COLS: GridColumn[] = ['C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V'];
   const ROWS: GridRow[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21];
