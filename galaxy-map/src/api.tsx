@@ -1,13 +1,37 @@
-import type { GridColumn, GridRow, System } from "./types";
+import type { GridColumn, GridRow, Region, System } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
+
+interface RawSystem {
+  id: number;
+  name: string;
+  sector: string | null;
+  region: Region;
+  grid_col: GridColumn;
+  grid_row: GridRow;
+  description: string | null;
+  is_user_added: boolean | number;
+}
+
+function toSystem(raw: RawSystem): System {
+  return {
+    id: raw.id,
+    name: raw.name,
+    sector: raw.sector,
+    region: raw.region,
+    gridCoordinate: { col: raw.grid_col, row: raw.grid_row },
+    description: raw.description,
+    isUserAdded: Boolean(raw.is_user_added),
+  };
+}
 
 export async function getAllSystems(): Promise<System[]> {
   const response = await fetch(`${API_BASE}/systems`);
   if (!response.ok) {
     throw new Error(`Failed to fetch systems: ${response.status}`);
   }
-  return response.json();
+  const raw: RawSystem[] = await response.json();
+  return raw.map(toSystem);
 }
 
 
