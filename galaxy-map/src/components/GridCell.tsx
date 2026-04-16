@@ -1,8 +1,4 @@
-import type { GridColumn, GridRow } from '../types';
-
 interface GridCellProps {
-    col: GridColumn;
-    row: GridRow;
     count: number;
     isSelected: boolean;
     onClick: () => void;
@@ -17,7 +13,7 @@ function dotCount(count: number): 0 | 1 | 3 | 4 {
     return 4;
 }
 
-export function GridCell({ col, row, count, isSelected, onClick, onMouseEnter, onMouseLeave }: GridCellProps) {                
+export function GridCell({ count, isSelected, onClick, onMouseEnter, onMouseLeave }: GridCellProps) {                
     const dots = dotCount(count);                                                                                                
                                                                                                                                  
     const classes = [                                                                                                            

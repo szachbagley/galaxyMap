@@ -82,8 +82,6 @@
               return (
                 <GridCell
                   key={key}
-                  col={col}
-                  row={row}
                   count={entry?.count ?? 0}
                   isSelected={isSelected}
                   onClick={() =>

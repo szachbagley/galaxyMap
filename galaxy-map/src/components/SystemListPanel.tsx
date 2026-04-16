@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import type { System } from '../types';
 
 export function SystemListPanel() {
   const { state } = useAppContext();
