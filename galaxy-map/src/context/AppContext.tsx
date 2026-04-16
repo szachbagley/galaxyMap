@@ -55,7 +55,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         case 'SELECT_COORDINATE':
             return {
                 ...state,
-                selectedCoordinate: action.payload
+                selectedCoordinate: action.payload,
+                selectedSystem: null
             };
         case 'CLEAR_COORDINATE':
             return {

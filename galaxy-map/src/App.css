@@ -1,15 +1,34 @@
+/* ── Split layout ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout__grid {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: auto;
+  background: var(--bg);
+
+  /* 21 cols (1 label + 20 cells) × 22 rows (1 label + 21 cells) */
+  /* Fill height by default; shrink to fit width if screen is too narrow */
+  --cell: min((100vh - 32px) / 22, (100vw - 323px) / 21);
+}
+
 /* ── Grid wrapper (background image + gridlines) ── */
 .grid-wrapper {
   position: relative;
   width: fit-content;
-  margin: 32px auto;
 }
 
 /* ── Grid container ── */
 .grid-container {
   display: grid;
-  grid-template-columns: 28px repeat(20, 28px);
-  grid-template-rows: 28px repeat(21, 28px);
+  grid-template-columns: var(--cell) repeat(20, var(--cell));
+  grid-template-rows: var(--cell) repeat(21, var(--cell));
   gap: 0;
   position: relative;
   z-index: 1;
@@ -18,11 +37,10 @@
 /* Background image — covers only the cell area, offset past axis labels */
 .grid-bg {
   position: absolute;
-  top: 28px;   /* skip column header row */
-  left: 28px;  /* skip row label column */
-  width: calc(20 * 28px);
-  height: calc(21 * 28px);
-  background-image: url('../assets/galaxy-map-background.png');
+  top: var(--cell);   /* skip column header row */
+  left: var(--cell);  /* skip row label column */
+  width: calc(20 * var(--cell));
+  height: calc(21 * var(--cell));
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -36,7 +54,7 @@
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-size: var(--cell) var(--cell);
 }
 
 /* ── Axis labels ── */
@@ -63,8 +81,8 @@
 
 /* ── Grid cell ── */
 .cell {
-  width: 28px;
-  height: 28px;
+  width: var(--cell);
+  height: var(--cell);
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
@@ -168,4 +186,478 @@
   right: -2px;
   border-bottom: 2px solid var(--yellow);
   border-right: 2px solid var(--yellow);
+}
+
+/* ── System list panel ── */
+.panel {
+  width: 290px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.panel__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.panel__grid-ref {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--yellow);
+}
+
+.panel__count {
+  font-size: 9px;
+  letter-spacing: 0.10em;
+  color: var(--cyan);
+}
+
+/* ── System list (scrollable) ── */
+.panel__list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.panel__list::-webkit-scrollbar { width: 3px; }
+.panel__list::-webkit-scrollbar-track { background: var(--bg); }
+.panel__list::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── System rows ── */
+.panel__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background 100ms;
+}
+
+.panel__row:hover {
+  background: var(--surface2);
+}
+
+.panel__row--active {
+  border-left-color: var(--yellow);
+  background: var(--yellow-bg);
+}
+
+.panel__row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel__row-name {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel__row-meta {
+  font-size: 8px;
+  letter-spacing: 0.10em;
+  color: var(--muted);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Source badges ── */
+.panel__badge {
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.panel__badge--canon {
+  color: var(--cyan);
+  border: 1px solid var(--cyan-dim);
+  background: var(--cyan-bg);
+}
+
+.panel__badge--added {
+  color: var(--yellow);
+  border: 1px solid var(--yellow-dim);
+  background: var(--yellow-bg);
+}
+
+/* ── Empty state ── */
+.panel__empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px;
+}
+
+.panel__empty-title {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+.panel__empty-sub {
+  font-size: 8px;
+  letter-spacing: 0.10em;
+  color: var(--muted);
+  opacity: 0.55;
+}
+
+/* ═══════════════════════════════════════════
+   System Detail Page
+   ═══════════════════════════════════════════ */
+
+.detail {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.detail__back {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.detail__back:hover {
+  color: var(--cyan);
+}
+
+.detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.detail__header-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail__name {
+  font-size: 15px;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin: 0;
+}
+
+.detail__grid-ref {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--cyan);
+  margin-top: 4px;
+}
+
+.detail__badge {
+  font-size: 7px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.detail__badge--canon {
+  color: var(--cyan);
+  border: 1px solid var(--cyan-dim);
+  background: var(--cyan-bg);
+}
+
+.detail__badge--added {
+  color: var(--yellow);
+  border: 1px solid var(--yellow-dim);
+  background: var(--yellow-bg);
+}
+
+/* ── Data fields ── */
+.detail__fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail__field {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail__field--description {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.detail__label {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.detail__value {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  text-align: right;
+}
+
+.detail__value--description {
+  text-align: left;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.detail__value--null {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-style: italic;
+  text-align: right;
+}
+
+/* ── User-added controls ── */
+.detail__controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.detail__btn {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 1px solid;
+  background: transparent;
+  color: var(--white);
+}
+
+.detail__btn--edit {
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+}
+
+.detail__btn--edit:hover {
+  background: var(--cyan-bg);
+}
+
+.detail__btn--delete {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.detail__btn--delete:hover {
+  background: rgba(204, 34, 0, 0.08);
+}
+
+/* ── Loading / Error states ── */
+.detail__loading,
+.detail__error {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-align: center;
+  padding: 60px 20px;
+}
+
+/* ═══════════════════════════════════════════
+   Nearby 3×3 Grid
+   ═══════════════════════════════════════════ */
+
+.detail__nearby {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.detail__nearby-title {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.nearby {
+  display: flex;
+  flex-direction: column;
+}
+
+.nearby__row {
+  display: flex;
+}
+
+.nearby__cell {
+  width: 72px;
+  height: 52px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.nearby__cell:hover {
+  background: var(--surface2);
+}
+
+.nearby__cell--center {
+  border-color: var(--yellow);
+  border-width: 2px;
+}
+
+.nearby__cell--disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.nearby__cell--disabled:hover {
+  background: var(--surface);
+}
+
+.nearby__coord {
+  font-size: 7px;
+  letter-spacing: 0.10em;
+  color: var(--muted);
+}
+
+.nearby__cell--center .nearby__coord {
+  color: var(--yellow);
+}
+
+.nearby__count {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+}
+
+.nearby__count--center {
+  color: var(--yellow);
+}
+
+.nearby__empty {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ═══════════════════════════════════════════
+   Scan-sweep loading indicator
+   ═══════════════════════════════════════════ */
+
+.scan {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  text-align: center;
+}
+
+.scan__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--green);
+  animation: scan-sweep 3s linear infinite;
+}
+
+@keyframes scan-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.scan__text {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+/* ── Grid loading/error overlay ── */
+.grid-status {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.grid-status__error {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-align: center;
+  padding: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   Mobile layout (≤ 900px)
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .layout__grid {
+    --cell: (100vw - 32px) / 21;
+    padding: 12px 16px;
+    overflow-x: auto;
+  }
+
+  .panel {
+    width: 100%;
+    max-height: 50vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    position: static;
+  }
+
+  .detail {
+    padding: 16px 14px;
+  }
+
+  .nearby__cell {
+    width: 60px;
+    height: 44px;
+  }
 }

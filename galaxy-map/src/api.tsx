@@ -45,7 +45,8 @@ export async function getSystemsByCoordinate(
       `Failed to fetch systems for ${col}-${row}: ${response.status}`,
     );
   }
-  return response.json();
+  const raw: RawSystem[] = await response.json();
+  return raw.map(toSystem);
 }
 
 export async function getSystemById(id: string): Promise<System> {
@@ -53,7 +54,8 @@ export async function getSystemById(id: string): Promise<System> {
   if (!response.ok) {
     throw new Error(`Failed to fetch system with ID ${id}: ${response.status}`);
   }
-  return response.json();
+  const raw: RawSystem = await response.json();
+  return toSystem(raw);
 }
 
 export async function getNearbySystems(id: string): Promise<System[]> {
@@ -63,7 +65,8 @@ export async function getNearbySystems(id: string): Promise<System[]> {
       `Failed to fetch nearby systems for ID ${id}: ${response.status}`,
     );
   }
-  return response.json();
+  const raw: RawSystem[] = await response.json();
+  return raw.map(toSystem);
 }
 
 // TODO: POST, PUT, DELETE functions for custom user-defined systems, if needed

@@ -1,14 +1,25 @@
-import { useAppContext } from './context/AppContext.tsx';
 import './App.css'
-import { Grid } from './components/Grid.tsx';
+import { Routes, Route } from 'react-router-dom'
+import { Grid } from './components/Grid.tsx'
+import { SystemListPanel } from './components/SystemListPanel.tsx'
+import { SystemDetailPage } from './pages/SystemDetailPage.tsx'
 
 function App() {
-  // const { state, dispatch } = useAppContext();
-
   return (
-    <>
-      <Grid />
-    </>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <div className="layout">
+            <div className="layout__grid">
+              <Grid />
+            </div>
+            <SystemListPanel />
+          </div>
+        }
+      />
+      <Route path="/systems/:id" element={<SystemDetailPage />} />
+    </Routes>
   )
 }
 
