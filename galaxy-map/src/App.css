@@ -66,7 +66,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   color: var(--muted);
 }
@@ -211,13 +211,13 @@
 }
 
 .panel__grid-ref {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   color: var(--yellow);
 }
 
 .panel__count {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.10em;
   color: var(--cyan);
 }
@@ -260,7 +260,7 @@
 }
 
 .panel__row-name {
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.04em;
   color: var(--white);
   white-space: nowrap;
@@ -269,7 +269,7 @@
 }
 
 .panel__row-meta {
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.10em;
   color: var(--muted);
   margin-top: 3px;
@@ -280,7 +280,7 @@
 
 /* ── Source badges ── */
 .panel__badge {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   padding: 2px 4px;
   flex-shrink: 0;
@@ -311,13 +311,13 @@
 }
 
 .panel__empty-title {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   color: var(--muted);
 }
 
 .panel__empty-sub {
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.10em;
   color: var(--muted);
   opacity: 0.55;
@@ -328,8 +328,6 @@
    ═══════════════════════════════════════════ */
 
 .detail {
-  max-width: 520px;
-  margin: 0 auto;
   padding: 24px 20px;
   min-height: 100vh;
   background: var(--bg);
@@ -337,7 +335,7 @@
 
 .detail__back {
   display: inline-block;
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   color: var(--muted);
   text-decoration: none;
@@ -365,7 +363,7 @@
 }
 
 .detail__name {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: normal;
   letter-spacing: 0.06em;
   color: var(--white);
@@ -373,14 +371,14 @@
 }
 
 .detail__grid-ref {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   color: var(--cyan);
   margin-top: 4px;
 }
 
 .detail__badge {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   padding: 2px 6px;
   flex-shrink: 0;
@@ -421,13 +419,13 @@
 }
 
 .detail__label {
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.12em;
   color: var(--muted);
 }
 
 .detail__value {
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.06em;
   color: var(--cyan);
   text-align: right;
@@ -440,7 +438,7 @@
 }
 
 .detail__value--null {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--muted);
   font-style: italic;
@@ -458,7 +456,7 @@
 
 .detail__btn {
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.12em;
   padding: 6px 14px;
   cursor: pointer;
@@ -489,7 +487,7 @@
 /* ── Loading / Error states ── */
 .detail__loading,
 .detail__error {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   color: var(--muted);
   text-align: center;
@@ -507,7 +505,7 @@
 }
 
 .detail__nearby-title {
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   color: var(--muted);
   margin-bottom: 10px;
@@ -554,7 +552,7 @@
 }
 
 .nearby__coord {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 0.10em;
   color: var(--muted);
 }
@@ -564,7 +562,7 @@
 }
 
 .nearby__count {
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.04em;
   color: var(--cyan);
 }
@@ -574,7 +572,7 @@
 }
 
 .nearby__empty {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -605,7 +603,7 @@
 }
 
 .scan__text {
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   color: var(--muted);
 }
@@ -622,7 +620,7 @@
 }
 
 .grid-status__error {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   color: var(--red);
   text-align: center;

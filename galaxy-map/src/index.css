@@ -10,8 +10,8 @@
   --cyan-bg:    rgba(0,200,200,0.06);
   --green:      #00CC44;
   --red:        #CC2200;
-  --white:      #DDD8C4;
-  --muted:      #555550;
+  --white:      #F0EDE0;
+  --muted:      #909088;
   --border:     #222220;
   --border2:    #2E2E2A;
   --grid-line:  rgba(255,255,255,0.07);
@@ -32,5 +32,5 @@ body {
   color: var(--white);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  font-size: 10px;
+  font-size: 12px;
 }
